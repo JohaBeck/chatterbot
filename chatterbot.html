@@ -1,5 +1,6 @@
 <html>
 <head>
+  <meta charset="utf-8">
 <title>JS-Bot-Shell 1.0</title>
 
 
@@ -38,12 +39,14 @@ td {
 <script type="text/javascript">
 
 //----Data Declarations----
+//var convpatterns = Satz durch Mensch, es schaut sich den Input an und antworten dann darauf/sucht sich dann eine Antwort aus
 
 var convpatterns = new Array (
-  new Array (".*Salut.*","Bonjour"),
-  new Array ("^Je (?: souhaite|voudrais bien )(?:je pourrais |Je serais capable de |de faire )(.*)\.","What would it be like to be able to $1?"),
-  new Array ("I need (.*)\." , "Why do you need $1?", "Would it really help you to get $1?" , "Are you sure you need $1?"),
-  new Array ("^When(.*) stole (.*)\.","What happened when $2 was stolen?","And how did you feel then?","Was $2 ever found?"),
+  new Array (".*Salut.*","Bonjour."),
+  new Array ("^Je (?: souhaite|voudrais bien )(?:je pourrais |Je serais capable de faire )(.*)\.","C'est comment d'être capable de faire $1?"),
+  new Array ("J'ai besoin de (.*)\." , "Pourqoui vous avez besoin de $1?", "Would it really help you to get $1?" , "Are you sure you need $1?"),
+//  new Array ("^When(.*) stole (.*)\.","What happened when $2 was stolen?","And how did you feel then?","Was $2 ever found?"),
+new array ("^Quand (.*) vole" (.*)\.", "Qu'est-ce qu'est)
   new Array ("I'd really like to (.*)\.","If you had the chance to $1, what would happen next?","Well then, I hope you get to $1."),
   new Array ("Why don't you (.*?)[\?]" , "Do you really think I don't $1?","Perhaps eventually I will $1.","Do you really want me to $1?"),
   new Array ("Why can't I (.*?)[\?]" , "Do you think you should be able to $1?","If you could $1, what would you do?",	"I don't know -- why can't you $1?","Have you really tried?"),
@@ -75,12 +78,20 @@ var convpatterns = new Array (
   new Array ("Why (.*)\?", "Why don't you tell me the reason why $1?","Why do you think $1?" ),
   new Array ("I want (.*)\.", "What would it mean to you if you got $1?","Why do you want $1?","What would you do if you got $1?","If you got $1, then what would you do?"),
   new Array (".*( the highway| the road).*","The highway is for gamblers, you better use your sense."),
+
+// wenn Schlüsselwörter/Trigger wie Mother, father, child, ... fallen, kommen die folgenden Sätze
+
   new Array ("(.*) mother(.*)\.",	"Tell me more about your mother.","What was your relationship with your mother like?",	"How do you feel about your mother?","How does this relate to your feelings today?","Good family relations are important."),
   new Array ("(.*) father(.*)\.","Tell me more about your father.", "How did your father make you feel?","How do you feel about your father?","Does your relationship with your father relate to your feelings today?",	"Do you have trouble showing affection with your family?"),
   new Array ("(.*) child(.*)\.","Did you have close friends as a child?",	"What is your favorite childhood memory?","Do you remember any dreams or nightmares from childhood?","Did the other children sometimes tease you?","How do you think your childhood experiences relate to your feelings today?"),
   new Array ("(.*) your fav(o|ou)rite(.*?)[\?]","I really don't have a favorite.","I have so many favorites it's hard to choose one."),
+
+// egal was hauptsache Fragezeichen [\?] ->
+
   new Array ("(.*?)[\?]","Hmm, not sure I know..", "That's an interesting question...",  "Gosh, I'm not sure I can answer that...","Why do you ask that?","Please consider whether you can answer your own question.",	"Perhaps the answer lies within yourself?","Why don't you tell me?", "If you knew that in one year you would die suddenly, would you change anything about the way you are living now?"),
-  new Array ("(.*)","Do you have any hobbies?", "I see,  please continue...", "What exactly are we talking about?", "Can you go over that again please..", "Um, i get the feeling this conversation is not going anywhere..",  "oh yeah?",  "hmm, is that so..", "Please tell me more.","Let's change focus a bit... Tell me about your family.","Can you elaborate on that?","I see.","Very interesting.", "I see.  And what does that tell you?","How does that make you feel?","How do you feel when you say that?","If you had to have one piece of music softly playing in your mind for the rest of your life, what would you want it to be?","What room of your home do you spend the most time in?","If you could go back in time and become friends with one famous person, whom would you chose?","Which of the seven dwarfs personifies you best – Dopey, Sneezy, Sleepy, Bashful, Grumpy, Happy, or Doc?","Which animal would you leave out of the ark?"));
+
+// .* da kommt einfach eine Antwort, da er/sie nicht weiß was er antworten soll
+  new Array ("(.*)","Est-ce que vous avez des loisirs ?", "D'accord, je comprends continuez s'il vous plaît...", "De quoi nous parlons exactement ?", "Est-ce que vous pouvez retourner au sujet auparavant s'il vous plaît ?", "heu, j'ai le sentiment que la conversation va n'importe où...",  "ohh vraiment ?",  "heu, c'est comme ca ?", "S'il vous plaît, racontez plus.","Laissons nous changer le sujet... Racontez la famille, s'il vous plaît.","Est-ce que vous pouvez l'exposer ?","D'accord.","Très intéressant.", "Je comprends.  Et qu'est-ce que cela nous disons ?","Comment vous vous sentez quand vous pensez à cela ?","Comment vous vous sentez quand vous disez cela ?","If you had to have one piece of music softly playing in your mind for the rest of your life, what would you want it to be?","What room of your home do you spend the most time in?","If you could go back in time and become friends with one famous person, whom would you chose?","Which of the seven dwarfs personifies you best Dopey, Sneezy, Sleepy, Bashful, Grumpy, Happy, or Doc?","Which animal would you leave out of the ark?"));
 
 
 uinput = ""
@@ -145,12 +156,12 @@ function initialCap(field) {
 function runtest(){
 
 var testdata = new Array (
-  new Array ("Hello."),
-  new Array ("I can't understand you."),
-  new Array ("I'm going to New York tomorrow."),
-  new Array ("Are you serious?"),
-  new Array ("Because they can."),
-  new Array ("I'm really sorry about that.")
+  new Array ("Salut."),
+  new Array ("Je ne peux pas vous comprendre."),
+  new Array ("Je vais aller à New York demain."),
+  new Array ("Etes-vous sûr ?"),
+  new Array ("Parce qu'ils peuvent..."),
+  new Array ("Je suis vraiment désolé.")
 
 );
 
@@ -162,7 +173,7 @@ var testdata = new Array (
              }
 
 }
-
+console.log("hallo" + convpatterns);
 </script>
 </head>
 
